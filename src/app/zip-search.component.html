@@ -1,0 +1,36 @@
+<section class="zip-search">
+  <h2>Zip Search (Hungary)</h2>
+  <div class="controls">
+    <input
+      type="text"
+      placeholder="Enter 4-digit zip code, e.g. 1051"
+      [ngModel]="searchZip()"
+      (ngModelChange)="searchZip.set($event)"
+      (keydown.enter)="findZip()"
+    />
+    <button (click)="findZip()" [disabled]="loading()">Search</button>
+    <button class="alt" (click)="clear()" [disabled]="loading()">Clear</button>
+  </div>
+  <div class="loading" *ngIf="loading()">
+    <p>Loading zip database…</p>
+  </div>
+
+  <div class="result" *ngIf="found() as res">
+    <h3>Result for {{ res.zip }}</h3>
+    <ul>
+      <li><strong>City:</strong> {{ res.city }}</li>
+      <li><strong>County:</strong> {{ res.county }}</li>
+      <li *ngIf="res.population"><strong>Population:</strong> {{ res.population }}</li>
+      <li *ngIf="res.lat && res.lon"><strong>Coords:</strong> {{ res.lat }}, {{ res.lon }}</li>
+      <li *ngIf="res.notes"><strong>Notes:</strong> {{ res.notes }}</li>
+    </ul>
+  </div>
+
+  <div class="not-found" *ngIf="!loading() && found() === null">
+    <p>No result for '{{ searchZip() }}'. Try another ZIP.</p>
+  </div>
+
+  <div class="prompt" *ngIf="!loading() && found() === undefined">
+    <p>Type a ZIP and press Search.</p>
+  </div>
+</section>
